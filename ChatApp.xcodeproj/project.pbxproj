@@ -9,21 +9,29 @@
 /* Begin PBXBuildFile section */
 		3A815A132727FB220048A1EB /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A815A112727FB220048A1EB /* ChatViewController.swift */; };
 		3A815A142727FB220048A1EB /* ChatViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A815A122727FB220048A1EB /* ChatViewController.xib */; };
+		3A815A1A272806B40048A1EB /* UINavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A815A19272806B40048A1EB /* UINavigationBar.swift */; };
+		3A815A1F2728071C0048A1EB /* ChatMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A815A1D2728071C0048A1EB /* ChatMessageCell.swift */; };
+		3A815A202728071C0048A1EB /* ChatMessageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A815A1E2728071C0048A1EB /* ChatMessageCell.xib */; };
 		3AD099892727F9EE0096B1D2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD099882727F9EE0096B1D2 /* AppDelegate.swift */; };
 		3AD0998B2727F9EE0096B1D2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD0998A2727F9EE0096B1D2 /* SceneDelegate.swift */; };
 		3AD099922727F9F50096B1D2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3AD099912727F9F50096B1D2 /* Assets.xcassets */; };
 		3AD099952727F9F50096B1D2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3AD099932727F9F50096B1D2 /* LaunchScreen.storyboard */; };
+		3AFE811027280D530025DD74 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFE810F27280D530025DD74 /* Message.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		3A815A112727FB220048A1EB /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		3A815A122727FB220048A1EB /* ChatViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChatViewController.xib; sourceTree = "<group>"; };
+		3A815A19272806B40048A1EB /* UINavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UINavigationBar.swift; sourceTree = "<group>"; };
+		3A815A1D2728071C0048A1EB /* ChatMessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageCell.swift; sourceTree = "<group>"; };
+		3A815A1E2728071C0048A1EB /* ChatMessageCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChatMessageCell.xib; sourceTree = "<group>"; };
 		3AD099852727F9EE0096B1D2 /* ChatApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChatApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3AD099882727F9EE0096B1D2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3AD0998A2727F9EE0096B1D2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		3AD099912727F9F50096B1D2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3AD099942727F9F50096B1D2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3AD099962727F9F50096B1D2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3AFE810F27280D530025DD74 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -40,10 +48,36 @@
 		3A815A102727FB030048A1EB /* ChatViewController */ = {
 			isa = PBXGroup;
 			children = (
+				3A815A1C272806F70048A1EB /* ChatView */,
+				3A815A23272807210048A1EB /* ChatMessageCell */,
+			);
+			path = ChatViewController;
+			sourceTree = "<group>";
+		};
+		3A815A182728069A0048A1EB /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				3A815A19272806B40048A1EB /* UINavigationBar.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		3A815A1C272806F70048A1EB /* ChatView */ = {
+			isa = PBXGroup;
+			children = (
 				3A815A112727FB220048A1EB /* ChatViewController.swift */,
 				3A815A122727FB220048A1EB /* ChatViewController.xib */,
 			);
-			path = ChatViewController;
+			path = ChatView;
+			sourceTree = "<group>";
+		};
+		3A815A23272807210048A1EB /* ChatMessageCell */ = {
+			isa = PBXGroup;
+			children = (
+				3A815A1D2728071C0048A1EB /* ChatMessageCell.swift */,
+				3A815A1E2728071C0048A1EB /* ChatMessageCell.xib */,
+			);
+			path = ChatMessageCell;
 			sourceTree = "<group>";
 		};
 		3AD0997C2727F9EE0096B1D2 = {
@@ -65,6 +99,7 @@
 		3AD099872727F9EE0096B1D2 /* ChatApp */ = {
 			isa = PBXGroup;
 			children = (
+				3A815A182728069A0048A1EB /* Extensions */,
 				3AD099A02727FA940096B1D2 /* Model */,
 				3AD0999D2727FA410096B1D2 /* UI */,
 				3AD0999E2727FA480096B1D2 /* SupportFiles */,
@@ -95,6 +130,7 @@
 		3AD099A02727FA940096B1D2 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				3AFE810F27280D530025DD74 /* Message.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -157,6 +193,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3AD099952727F9F50096B1D2 /* LaunchScreen.storyboard in Resources */,
+				3A815A202728071C0048A1EB /* ChatMessageCell.xib in Resources */,
 				3AD099922727F9F50096B1D2 /* Assets.xcassets in Resources */,
 				3A815A142727FB220048A1EB /* ChatViewController.xib in Resources */,
 			);
@@ -170,8 +207,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				3AD099892727F9EE0096B1D2 /* AppDelegate.swift in Sources */,
+				3A815A1F2728071C0048A1EB /* ChatMessageCell.swift in Sources */,
 				3A815A132727FB220048A1EB /* ChatViewController.swift in Sources */,
+				3AFE811027280D530025DD74 /* Message.swift in Sources */,
 				3AD0998B2727F9EE0096B1D2 /* SceneDelegate.swift in Sources */,
+				3A815A1A272806B40048A1EB /* UINavigationBar.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
