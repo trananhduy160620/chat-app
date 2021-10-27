@@ -48,18 +48,19 @@ class ChatViewController: UIViewController {
         chatMessageTableview.separatorStyle = .none
         let nibCell = UINib(nibName: "ChatMessageCell", bundle: nil)
         chatMessageTableview.register(nibCell, forCellReuseIdentifier: "ChatMessageCell")
+        
     }
     
     // MARK: - Set up actions
     @IBAction func sendMessageButtonClick(_ sender: UIButton) {
         guard let inputMessage = messageTextField.text else { return }
         let message = Message(text: inputMessage, isIncoming: false)
-        
-        DispatchQueue.main.async {
-            self.chatMessages.append(message)
-            self.chatMessageTableview.reloadData()
-        }
-        
+        chatMessages.append(message)
+        let row = chatMessages.count - 1
+        let indexPath = IndexPath(row: row, section: 0)
+        chatMessageTableview.insertRows(at: [indexPath], with: UITableView.RowAnimation.automatic)
+        chatMessageTableview.scrollToRow(at: indexPath, at: .bottom, animated: true)
+        messageTextField.text = ""
     }
     
     @objc func handleKeyboard(notification: Notification) {
