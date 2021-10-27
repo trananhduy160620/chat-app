@@ -11,6 +11,8 @@ class ChatViewController: UIViewController {
     @IBOutlet weak var chatMessageTableview: UITableView!
     @IBOutlet weak var messageTextField: UITextField!
     @IBOutlet weak var sendMessageButton: UIButton!
+    @IBOutlet weak var bottomContainerView: NSLayoutConstraint!
+    
     var chatMessages:[Message] = []
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,6 +22,9 @@ class ChatViewController: UIViewController {
         setupChatTableView()
         // data
         createChatMessageData()
+        // handle keyboard
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboard(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboard(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     // MARK: - Set up outlets
@@ -47,7 +52,28 @@ class ChatViewController: UIViewController {
     
     // MARK: - Set up actions
     @IBAction func sendMessageButtonClick(_ sender: UIButton) {
+        guard let inputMessage = messageTextField.text else { return }
+        let message = Message(text: inputMessage, isIncoming: false)
         
+        DispatchQueue.main.async {
+            self.chatMessages.append(message)
+            self.chatMessageTableview.reloadData()
+        }
+        
+    }
+    
+    @objc func handleKeyboard(notification: Notification) {
+        if let userInfo = notification.userInfo {
+            let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as! CGRect
+            let isKeyboardShowing = notification.name == UIResponder.keyboardWillShowNotification
+            bottomContainerView.constant = isKeyboardShowing ? keyboardFrame.height : 10
+            UIView.animate(withDuration: 0, delay: 0, options: UIView.AnimationOptions.curveEaseInOut) {
+                self.view.layoutIfNeeded()
+            } completion: { (complete) in
+                let indexPath = IndexPath(row: self.chatMessages.count - 1, section: 0)
+                self.chatMessageTableview.scrollToRow(at: indexPath, at: .bottom, animated: true)
+            }
+        }
     }
     
     // MARK: - Create datas
@@ -69,7 +95,9 @@ class ChatViewController: UIViewController {
 
 // MARK: - UITableViewDelegate
 extension ChatViewController : UITableViewDelegate {
-    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        messageTextField.endEditing(true)
+    }
 }
 
 // MARK: - UITableViewDataSource
