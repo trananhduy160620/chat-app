@@ -18,17 +18,16 @@ class ChatMessageCell: UITableViewCell {
         messageContainerView.layer.masksToBounds = true
     }
     
-    func setupDisplay(message: Message) {
-        messageContainerView.backgroundColor = message.isIncoming ? .white : .systemGreen
-        messageLabel.backgroundColor = message.isIncoming ? .white : .systemGreen
-        messageLabel.textColor = message.isIncoming ? .black : .white
-        messageLabel.text = message.text
-        
+    func setupDisplayForMessageTest(currentUserID:String, message: Message) {
+        messageContainerView.backgroundColor = currentUserID == message.sender ? .systemGreen : .white
+        messageLabel.backgroundColor = currentUserID == message.sender ? .systemGreen : .white
+        messageLabel.textColor = currentUserID == message.sender ? .white : .black
+        messageLabel.text = message.content
         leadingConstraint.isActive = false
-        if message.isIncoming {
-            leadingConstraint = messageContainerView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16)
-        } else {
+        if currentUserID == message.sender {
             leadingConstraint = messageContainerView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16)
+        } else {
+            leadingConstraint = messageContainerView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16)
         }
         leadingConstraint.isActive = true
         setNeedsLayout()

@@ -44,7 +44,7 @@
                             </connections>
                         </button>
                     </subviews>
-                    <color key="backgroundColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstItem="CoX-7Z-Nip" firstAttribute="width" secondItem="Ojg-yh-1Ly" secondAttribute="width" multiplier="4/5" id="T8y-lU-pLE"/>
                         <constraint firstItem="CoX-7Z-Nip" firstAttribute="leading" secondItem="Ojg-yh-1Ly" secondAttribute="leading" id="akf-AU-C4G"/>

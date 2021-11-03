@@ -6,17 +6,20 @@
 //
 
 import UIKit
+import Firebase
+
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
 
-    func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+    func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions)
+    {
         guard let windowScene = (scene as? UIWindowScene) else { return }
+        FirebaseApp.configure()
         window = UIWindow(windowScene: windowScene)
-        let chatVC = ChatViewController()
-        let navBar = UINavigationController(rootViewController: chatVC)
-        window?.rootViewController = navBar
+        let loginVC = LoginViewController()
+        window?.rootViewController = loginVC
         window?.makeKeyAndVisible()
     }
 

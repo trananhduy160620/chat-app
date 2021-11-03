@@ -6,33 +6,53 @@
 //
 
 import UIKit
+import FirebaseAuth
+import Firebase
 
 class ChatViewController: UIViewController {
     @IBOutlet weak var chatMessageTableview: UITableView!
     @IBOutlet weak var messageTextField: UITextField!
     @IBOutlet weak var sendMessageButton: UIButton!
     @IBOutlet weak var bottomContainerView: NSLayoutConstraint!
-    
     var chatMessages:[Message] = []
+    var ref:DatabaseReference!
+    var user:User?
+    var type:DataEventType = .value
+    var newTextMessage = ""
     override func viewDidLoad() {
         super.viewDidLoad()
+        ref = Database.database().reference()
         // outlets
         setupNavigationBar()
         setupSendMessageButton()
         setupChatTableView()
-        // data
-        createChatMessageData()
         // handle keyboard
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboard(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboard(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        fetchChatOfUser(type: type) { (result) in
+            switch result {
+            case .success(let messages):
+                DispatchQueue.main.async {
+                    self.chatMessages = messages
+                    self.chatMessageTableview.reloadData()
+                    if self.chatMessages.count != 0 {
+                        let indexPath = IndexPath(row: self.chatMessages.count - 1, section: 0)
+                        self.chatMessageTableview.scrollToRow(at: indexPath, at: .bottom, animated: true)
+                    }
+                }
+            case .failure(_):
+                print("error")
+            }
+        }
     }
     
     // MARK: - Set up outlets
     private func setupNavigationBar() {
-        self.navigationItem.title = "Message"
-        self.navigationController?.navigationBar.largeTitleTextAttributes = [.foregroundColor : UIColor.white]
-        self.navigationController?.navigationBar.backgroundColor = UIColor.systemGreen
-        self.navigationController?.navigationBar.prefersLargeTitles = true
+        if let user = user {
+            self.navigationItem.title = user.displayName
+            self.navigationController?.navigationBar.largeTitleTextAttributes = [.foregroundColor : UIColor.white]
+            self.navigationController?.navigationBar.backgroundColor = UIColor.systemGreen
+        }
     }
     
     private func setupSendMessageButton() {
@@ -48,18 +68,16 @@ class ChatViewController: UIViewController {
         chatMessageTableview.separatorStyle = .none
         let nibCell = UINib(nibName: "ChatMessageCell", bundle: nil)
         chatMessageTableview.register(nibCell, forCellReuseIdentifier: "ChatMessageCell")
-        
     }
     
     // MARK: - Set up actions
     @IBAction func sendMessageButtonClick(_ sender: UIButton) {
         guard let inputMessage = messageTextField.text else { return }
-        let message = Message(text: inputMessage, isIncoming: false)
-        chatMessages.append(message)
-        let row = chatMessages.count - 1
-        let indexPath = IndexPath(row: row, section: 0)
-        chatMessageTableview.insertRows(at: [indexPath], with: UITableView.RowAnimation.automatic)
-        chatMessageTableview.scrollToRow(at: indexPath, at: .bottom, animated: true)
+        guard let currentUser = Auth.auth().currentUser else { return }
+        guard let user = user else { return }
+        let rootNode = ref.child("Conversation").child("Messages")
+        let value = ["content": inputMessage, "receiver": user.id, "sender": currentUser.uid]
+        rootNode.childByAutoId().setValue(value)
         messageTextField.text = ""
     }
     
@@ -71,26 +89,36 @@ class ChatViewController: UIViewController {
             UIView.animate(withDuration: 0, delay: 0, options: UIView.AnimationOptions.curveEaseInOut) {
                 self.view.layoutIfNeeded()
             } completion: { (complete) in
-                let indexPath = IndexPath(row: self.chatMessages.count - 1, section: 0)
-                self.chatMessageTableview.scrollToRow(at: indexPath, at: .bottom, animated: true)
+                if self.chatMessages.count != 0 {
+                    let indexPath = IndexPath(row: self.chatMessages.count - 1, section: 0)
+                    self.chatMessageTableview.scrollToRow(at: indexPath, at: .bottom, animated: true)
+                }
             }
         }
     }
     
-    // MARK: - Create datas
-    private func createChatMessageData() {
-        chatMessages = [Message(text: "Lunar New Year Festival often falls between late January and early February; it is among the most important holidays in Vietnam",
-                                isIncoming: false),
-                        Message(text: "Lunar New Year Festival often falls between late January and early February", isIncoming: true),
-                        Message(text: "Officially, the festival includes the 1st, 2nd, and 3rd day in Lunar Calendar; however, Vietnamese people often spend nearly a month celebrating this special event.", isIncoming: false),
-                        Message(text: "Tet Holiday gets its beginning marked with the first day in the Lunar Year; however, its preparation starts long before that. The 23rd day of the last Lunar month is East Day—a ritual worshiping Kitchen Gods (Tao Cong)", isIncoming: true),
-                        Message(text: "Jade Emperor about all activities of households on earth. On New Year’s Eve, they return home to continue their duties as taking care of families.", isIncoming: false),
-                        Message(text: "Most of my friends like to stay inside to play video games, read books or watch TV, but I have a good hobby of going outside and playing sports. I play many different sports in my free time; some of them are soccer, swimming, volleyball and basketball. Sometimes I also ride the bikes or do board skating with my cousin in the park.", isIncoming: true),
-                        Message(text: "Lunar New Year Festival often falls between late January and early February", isIncoming: false),
-                        Message(text: "In my opinion, doing sport is one of the rare hobbies that actually have good impacts on me. I am taller than most of my classmates thanks to swimming and basketball lessons that I take during summer time.", isIncoming: false),
-                        Message(text: "Lunar New Year Festival often falls between late January and early February, Both of my physical and mental health become better after I play sports, so it can be considered as the best things to do in my free time. Sports are like a part of my life besides other activities, and I will continue to play sports till I am too weak for them.", isIncoming: true),
-                        Message(text: "Both of my physical and mental health become better after I play sports, so it can be considered as the best things to do in my free time. Sports are like a part of my life besides other activities, and I will continue to play sports till I am too weak for them.", isIncoming: true),
-                        Message(text: "Firstly, I love my ideal partner very much because she is enough clever to keep my heart cheerful and always helps me when I need her, especially in my studies.", isIncoming: false)]
+    private func fetchChatOfUser(type: DataEventType, completion:@escaping ((Result<[Message],Error>) -> Void)) {
+        guard let user = user else { return }
+        guard let currentUser = Auth.auth().currentUser else { return }
+        let conversationNode = ref.child("Conversation").child("Messages")
+        conversationNode.observe(type, with: { (snapshot) in
+            var tempMessages:[Message] = []
+            for child in snapshot.children {
+                let messSnapShot = child as! DataSnapshot
+                let messageDict = messSnapShot.value as! [String:Any]
+                let sender = messageDict["sender"] as! String
+                let content = messageDict["content"] as! String
+                let receiver = messageDict["receiver"] as! String
+                // Lọc tin nhắn của current user với user khách sau đó thêm vào mảng tempMessages
+                if (user.id == receiver && sender == currentUser.uid) || (receiver == currentUser.uid && sender == user.id)
+                {
+                    let message = Message(content: content, receiver: receiver, sender: sender)
+                    tempMessages.append(message)
+                }
+            }
+            // sau khi thêm thành công thì trả ra giá trị của tempMessages
+            completion(.success(tempMessages))
+        }, withCancel: nil)
     }
 }
 
@@ -109,8 +137,9 @@ extension ChatViewController : UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ChatMessageCell", for: indexPath) as! ChatMessageCell
+        guard let currentUser = Auth.auth().currentUser else { return UITableViewCell() }
         let message = chatMessages[indexPath.row]
-        cell.setupDisplay(message: message)
+        cell.setupDisplayForMessageTest(currentUserID: currentUser.uid, message: message)
         return cell
     }
 }
