@@ -6,17 +6,22 @@
 //
 
 import UIKit
+import Firebase
+
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
 
-    func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+
+    func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions)
+    {
         guard let windowScene = (scene as? UIWindowScene) else { return }
-        
+        FirebaseApp.configure()
         window = UIWindow(windowScene: windowScene)
+        let loginVC = LoginViewController()
+        window?.rootViewController = loginVC
         window?.makeKeyAndVisible()
-        window?.rootViewController = UINavigationController(rootViewController: ChatViewController())
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

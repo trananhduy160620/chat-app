@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Image references" minToolsVersion="12.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ChatViewController" customModule="ChatApp" customModuleProvider="target">
+            <connections>
+                <outlet property="bottomContainerView" destination="jqT-Cq-J0m" id="3uY-00-2cD"/>
+                <outlet property="chatMessageTableview" destination="KCF-Ma-Asy" id="wfd-ft-vKN"/>
+                <outlet property="messageTextField" destination="CoX-7Z-Nip" id="8S8-5L-KfX"/>
+                <outlet property="sendMessageButton" destination="mdW-9Q-nIz" id="0gV-Sd-KqD"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="KCF-Ma-Asy">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="826"/>
+                    <color key="backgroundColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                </tableView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ojg-yh-1Ly">
+                    <rect key="frame" x="0.0" y="836" width="414" height="40"/>
+                    <subviews>
+                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Input message" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="CoX-7Z-Nip">
+                            <rect key="frame" x="0.0" y="0.0" width="331" height="40"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <textInputTraits key="textInputTraits"/>
+                        </textField>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mdW-9Q-nIz">
+                            <rect key="frame" x="336" y="0.0" width="78" height="40"/>
+                            <color key="backgroundColor" red="0.3878085101" green="0.34851277930000002" blue="0.92145264149999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <state key="normal">
+                                <imageReference key="image" image="paperplane.fill" catalog="system" symbolScale="large" renderingMode="original"/>
+                            </state>
+                            <connections>
+                                <action selector="sendMessageButtonClick:" destination="-1" eventType="touchUpInside" id="24i-M1-k9e"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="CoX-7Z-Nip" firstAttribute="width" secondItem="Ojg-yh-1Ly" secondAttribute="width" multiplier="4/5" id="T8y-lU-pLE"/>
+                        <constraint firstItem="CoX-7Z-Nip" firstAttribute="leading" secondItem="Ojg-yh-1Ly" secondAttribute="leading" id="akf-AU-C4G"/>
+                        <constraint firstAttribute="trailing" secondItem="mdW-9Q-nIz" secondAttribute="trailing" id="i5a-XE-hK1"/>
+                        <constraint firstAttribute="bottom" secondItem="mdW-9Q-nIz" secondAttribute="bottom" id="iX9-4a-WSL"/>
+                        <constraint firstItem="mdW-9Q-nIz" firstAttribute="top" secondItem="Ojg-yh-1Ly" secondAttribute="top" id="mqS-Eo-wyR"/>
+                        <constraint firstAttribute="bottom" secondItem="CoX-7Z-Nip" secondAttribute="bottom" id="s6D-sP-aQV"/>
+                        <constraint firstAttribute="height" constant="40" id="vRJ-wv-BfK"/>
+                        <constraint firstItem="mdW-9Q-nIz" firstAttribute="leading" secondItem="CoX-7Z-Nip" secondAttribute="trailing" constant="5" id="ynd-8R-kci"/>
+                        <constraint firstItem="CoX-7Z-Nip" firstAttribute="top" secondItem="Ojg-yh-1Ly" secondAttribute="top" id="zsi-tc-Ham"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="KCF-Ma-Asy" secondAttribute="trailing" id="59g-HX-X93"/>
+                <constraint firstItem="Ojg-yh-1Ly" firstAttribute="top" secondItem="KCF-Ma-Asy" secondAttribute="bottom" constant="10" id="AaK-dI-vxm"/>
+                <constraint firstItem="KCF-Ma-Asy" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="Ao8-aH-iug"/>
+                <constraint firstItem="Ojg-yh-1Ly" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Y5I-Dt-R5u"/>
+                <constraint firstItem="KCF-Ma-Asy" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="jla-r1-AI4"/>
+                <constraint firstAttribute="bottom" secondItem="Ojg-yh-1Ly" secondAttribute="bottom" constant="20" id="jqT-Cq-J0m"/>
+                <constraint firstAttribute="trailing" secondItem="Ojg-yh-1Ly" secondAttribute="trailing" id="rbo-op-JmF"/>
+            </constraints>
+            <point key="canvasLocation" x="111.59420289855073" y="89.732142857142847"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="paperplane.fill" catalog="system" width="128" height="118"/>
+    </resources>
+</document>
