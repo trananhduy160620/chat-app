@@ -17,49 +17,33 @@ class ChatViewController: UIViewController {
     var chatMessages:[Message] = []
     var ref:DatabaseReference!
     var user:User?
-    var type:DataEventType = .value
     var newTextMessage = ""
     override func viewDidLoad() {
         super.viewDidLoad()
         ref = Database.database().reference()
-        // outlets
         setupNavigationBar()
+        setupMessageTextField()
         setupSendMessageButton()
         setupChatTableView()
-        // handle keyboard
-        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboard(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboard(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-        fetchChatOfUser(type: type) { (result) in
-            switch result {
-            case .success(let messages):
-                DispatchQueue.main.async {
-                    self.chatMessages = messages
-                    self.chatMessageTableview.reloadData()
-                    if self.chatMessages.count != 0 {
-                        let indexPath = IndexPath(row: self.chatMessages.count - 1, section: 0)
-                        self.chatMessageTableview.scrollToRow(at: indexPath, at: .bottom, animated: true)
-                    }
-                }
-            case .failure(_):
-                print("error")
-            }
-        }
+        setupKeyboardObserver()
+        fetchChat()
     }
     
     // MARK: - Set up outlets
     private func setupNavigationBar() {
         if let user = user {
             self.navigationItem.title = user.displayName
-            self.navigationController?.navigationBar.largeTitleTextAttributes = [.foregroundColor : UIColor.white]
-            self.navigationController?.navigationBar.backgroundColor = UIColor.systemGreen
         }
+    }
+    
+    private func setupMessageTextField() {
+        let attributted = NSAttributedString(string: "Input message here", attributes: [NSAttributedString.Key.foregroundColor : UIColor.white])
+        messageTextField.attributedPlaceholder = attributted
     }
     
     private func setupSendMessageButton() {
         let sendImage = UIImage(systemName: "paperplane.fill")
         sendMessageButton.setImage(sendImage?.withTintColor(.white, renderingMode: .alwaysOriginal), for: .normal)
-        sendMessageButton.layer.cornerRadius = 5
-        sendMessageButton.layer.masksToBounds = true
     }
     
     private func setupChatTableView() {
@@ -72,13 +56,27 @@ class ChatViewController: UIViewController {
     
     // MARK: - Set up actions
     @IBAction func sendMessageButtonClick(_ sender: UIButton) {
-        guard let inputMessage = messageTextField.text else { return }
+        guard let content = messageTextField.text else { return }
         guard let currentUser = Auth.auth().currentUser else { return }
         guard let user = user else { return }
-        let rootNode = ref.child("Conversation").child("Messages")
-        let value = ["content": inputMessage, "receiver": user.id, "sender": currentUser.uid]
-        rootNode.childByAutoId().setValue(value)
-        messageTextField.text = ""
+        if content != "" {
+            let message = Message(content: content, receiverID: user.id, senderID: currentUser.uid)
+            FirebaseChatManager.shared.addChat(message: message) { (result) in
+                switch result {
+                case .success(_):
+                    DispatchQueue.main.async {
+                        self.messageTextField.text = ""
+                    }
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
+        }
+    }
+    
+    private func setupKeyboardObserver() {
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboard(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboard(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     @objc func handleKeyboard(notification: Notification) {
@@ -89,36 +87,37 @@ class ChatViewController: UIViewController {
             UIView.animate(withDuration: 0, delay: 0, options: UIView.AnimationOptions.curveEaseInOut) {
                 self.view.layoutIfNeeded()
             } completion: { (complete) in
-                if self.chatMessages.count != 0 {
-                    let indexPath = IndexPath(row: self.chatMessages.count - 1, section: 0)
-                    self.chatMessageTableview.scrollToRow(at: indexPath, at: .bottom, animated: true)
-                }
+                self.tableViewScrollRowAtBottom()
             }
         }
     }
     
-    private func fetchChatOfUser(type: DataEventType, completion:@escaping ((Result<[Message],Error>) -> Void)) {
+    private func fetchChat() {
         guard let user = user else { return }
         guard let currentUser = Auth.auth().currentUser else { return }
-        let conversationNode = ref.child("Conversation").child("Messages")
-        conversationNode.observe(type, with: { (snapshot) in
-            var tempMessages:[Message] = []
-            for child in snapshot.children {
-                let messSnapShot = child as! DataSnapshot
-                let messageDict = messSnapShot.value as! [String:Any]
-                let sender = messageDict["sender"] as! String
-                let content = messageDict["content"] as! String
-                let receiver = messageDict["receiver"] as! String
-                // Lọc tin nhắn của current user với user khách sau đó thêm vào mảng tempMessages
-                if (user.id == receiver && sender == currentUser.uid) || (receiver == currentUser.uid && sender == user.id)
-                {
-                    let message = Message(content: content, receiver: receiver, sender: sender)
-                    tempMessages.append(message)
+        FirebaseChatManager.shared.fetchChat(currentUserID: currentUser.uid, with: user.id) { (result) in
+            switch result {
+            case .success(let listMessage):
+                DispatchQueue.main.async {
+                    self.chatMessages = listMessage
+                    self.chatMessageTableview.reloadData()
+                    self.tableViewScrollRowAtBottom()
                 }
+            case .failure(_):
+                print("Fetch Chat error")
             }
-            // sau khi thêm thành công thì trả ra giá trị của tempMessages
-            completion(.success(tempMessages))
-        }, withCancel: nil)
+        }
+    }
+    
+    private func tableViewScrollRowAtBottom() {
+        if chatMessages.count != 0 {
+            let indexPath = IndexPath(row: self.chatMessages.count - 1, section: 0)
+            self.chatMessageTableview.scrollToRow(at: indexPath, at: .bottom, animated: true)
+        }
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 }
 

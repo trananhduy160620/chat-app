@@ -19,12 +19,12 @@ class ChatMessageCell: UITableViewCell {
     }
     
     func setupDisplayForMessageTest(currentUserID:String, message: Message) {
-        messageContainerView.backgroundColor = currentUserID == message.sender ? .systemGreen : .white
-        messageLabel.backgroundColor = currentUserID == message.sender ? .systemGreen : .white
-        messageLabel.textColor = currentUserID == message.sender ? .white : .black
+        messageContainerView.backgroundColor = currentUserID == message.senderID ? .systemGreen : UIColor(red: 124/255, green: 124/255, blue: 124/255, alpha: 1)
+        messageLabel.backgroundColor = currentUserID == message.senderID ? .systemGreen : UIColor(red: 124/255, green: 124/255, blue: 124/255, alpha: 1)
+        messageLabel.textColor = currentUserID == message.senderID ? .white : .white
         messageLabel.text = message.content
         leadingConstraint.isActive = false
-        if currentUserID == message.sender {
+        if currentUserID == message.senderID {
             leadingConstraint = messageContainerView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16)
         } else {
             leadingConstraint = messageContainerView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16)

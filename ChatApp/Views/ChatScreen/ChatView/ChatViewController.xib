@@ -22,19 +22,20 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="KCF-Ma-Asy">
-                    <rect key="frame" x="0.0" y="0.0" width="414" height="826"/>
-                    <color key="backgroundColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="846"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </tableView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ojg-yh-1Ly">
-                    <rect key="frame" x="0.0" y="836" width="414" height="40"/>
+                    <rect key="frame" x="0.0" y="846" width="414" height="40"/>
                     <subviews>
                         <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Input message" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="CoX-7Z-Nip">
                             <rect key="frame" x="0.0" y="0.0" width="331" height="40"/>
+                            <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits"/>
                         </textField>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mdW-9Q-nIz">
-                            <rect key="frame" x="336" y="0.0" width="78" height="40"/>
+                            <rect key="frame" x="331" y="0.0" width="83" height="40"/>
                             <color key="backgroundColor" red="0.3878085101" green="0.34851277930000002" blue="0.92145264149999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <state key="normal">
                                 <imageReference key="image" image="paperplane.fill" catalog="system" symbolScale="large" renderingMode="original"/>
@@ -53,19 +54,19 @@
                         <constraint firstItem="mdW-9Q-nIz" firstAttribute="top" secondItem="Ojg-yh-1Ly" secondAttribute="top" id="mqS-Eo-wyR"/>
                         <constraint firstAttribute="bottom" secondItem="CoX-7Z-Nip" secondAttribute="bottom" id="s6D-sP-aQV"/>
                         <constraint firstAttribute="height" constant="40" id="vRJ-wv-BfK"/>
-                        <constraint firstItem="mdW-9Q-nIz" firstAttribute="leading" secondItem="CoX-7Z-Nip" secondAttribute="trailing" constant="5" id="ynd-8R-kci"/>
+                        <constraint firstItem="mdW-9Q-nIz" firstAttribute="leading" secondItem="CoX-7Z-Nip" secondAttribute="trailing" id="ynd-8R-kci"/>
                         <constraint firstItem="CoX-7Z-Nip" firstAttribute="top" secondItem="Ojg-yh-1Ly" secondAttribute="top" id="zsi-tc-Ham"/>
                     </constraints>
                 </view>
             </subviews>
-            <color key="backgroundColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="KCF-Ma-Asy" secondAttribute="trailing" id="59g-HX-X93"/>
-                <constraint firstItem="Ojg-yh-1Ly" firstAttribute="top" secondItem="KCF-Ma-Asy" secondAttribute="bottom" constant="10" id="AaK-dI-vxm"/>
+                <constraint firstItem="Ojg-yh-1Ly" firstAttribute="top" secondItem="KCF-Ma-Asy" secondAttribute="bottom" id="AaK-dI-vxm"/>
                 <constraint firstItem="KCF-Ma-Asy" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="Ao8-aH-iug"/>
                 <constraint firstItem="Ojg-yh-1Ly" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Y5I-Dt-R5u"/>
                 <constraint firstItem="KCF-Ma-Asy" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="jla-r1-AI4"/>
-                <constraint firstAttribute="bottom" secondItem="Ojg-yh-1Ly" secondAttribute="bottom" constant="20" id="jqT-Cq-J0m"/>
+                <constraint firstAttribute="bottom" secondItem="Ojg-yh-1Ly" secondAttribute="bottom" constant="10" id="jqT-Cq-J0m"/>
                 <constraint firstAttribute="trailing" secondItem="Ojg-yh-1Ly" secondAttribute="trailing" id="rbo-op-JmF"/>
             </constraints>
             <point key="canvasLocation" x="111.59420289855073" y="89.732142857142847"/>

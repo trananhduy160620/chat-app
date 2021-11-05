@@ -14,14 +14,14 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var homeTableView:UITableView!
     var ref:DatabaseReference!
     var users:[User] = []
-    private var titleBar = ""
     override func viewDidLoad() {
         super.viewDidLoad()
         // connect to firebase db
         ref = Database.database().reference()
         setupHomeTableView()
         setupLogoutButton()
-        fetchUsersInfo()
+        fetchCurrentUser()
+        fetchListUser()
     }
     
     private func setupHomeTableView() {
@@ -37,12 +37,12 @@ class HomeViewController: UIViewController {
     }
     
     @objc private func handleLogout() {
-        do {
-            try Auth.auth().signOut()
-            transitionToLoginVC()
-        }
-        catch {
-            print(error.localizedDescription)
+        FirebaseUserManager.shared.logoutUser { (message, authErrorCode) in
+            DispatchQueue.main.async {
+                Alert.shared.showMessage(title: "Đăng xuất", message: message, completion: { (action) in
+                    self.transitionToLoginVC()
+                }, vc: self)
+            }
         }
     }
     
@@ -52,25 +52,30 @@ class HomeViewController: UIViewController {
         self.view.window?.makeKeyAndVisible()
     }
     
-    private func fetchUsersInfo() {
-        guard let currentUser = Auth.auth().currentUser else { return }
-        ref.child("Users").observeSingleEvent(of: .value) { (snapshot) in
-            for child in snapshot.children {
-                let userSanpshot = child as! DataSnapshot
-                let userDict = userSanpshot.value as! [String:Any]
-                let userID = userDict["id"] as! String
-                let email = userDict["email"] as! String
-                let displayName = userDict["displayName"] as! String
-                let user = User(id: userID, displayName: displayName, email: email)
-                if currentUser.uid != user.id {
-                    self.users.append(user)
-                } else {
-                    self.titleBar = user.displayName
+    private func fetchListUser() {
+        FirebaseUserManager.shared.fetchListUser { (result) in
+            switch result {
+            case .success(let listUser):
+                DispatchQueue.main.async {
+                    self.users = listUser
+                    self.homeTableView.reloadData()
                 }
+            case .failure(_):
+                print("error")
             }
-            DispatchQueue.main.async {
-                self.homeTableView.reloadData()
-                self.title = self.titleBar
+        }
+    }
+    
+    private func fetchCurrentUser() {
+        guard let currentUser = Auth.auth().currentUser else { return }
+        FirebaseUserManager.shared.fetchUserInfo(currentUserID: currentUser.uid) { (result) in
+            switch result {
+            case .success(let user):
+                DispatchQueue.main.async {
+                    self.title = user.displayName
+                }
+            case .failure(_):
+                print("error")
             }
         }
     }

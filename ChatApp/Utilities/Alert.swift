@@ -16,4 +16,12 @@ class Alert {
         alert.addAction(actionAlert)
         vc.present(alert, animated: true, completion: nil)
     }
+    func showMessage(title:String, message:String, completion: @escaping(UIAlertAction) -> Void, vc:UIViewController) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertController.Style.alert)
+        let actionAlert = UIAlertAction(title: "OK", style: .default) { (action) in
+           completion(action)
+        }
+        alert.addAction(actionAlert)
+        vc.present(alert, animated: true, completion: nil)
+    }
 }

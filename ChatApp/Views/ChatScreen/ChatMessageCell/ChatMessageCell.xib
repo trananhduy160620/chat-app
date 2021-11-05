@@ -3,7 +3,6 @@
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -22,11 +21,11 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="So let’s say you don’t want to handle any of the issues mentioned above manually." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B2w-LT-MgD">
                                 <rect key="frame" x="8" y="8" width="227" height="68"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" red="0.48756741751269039" green="0.48756741751269039" blue="0.48756741751269039" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="B2w-LT-MgD" firstAttribute="top" secondItem="R0b-sD-v6N" secondAttribute="top" constant="8" id="1FO-Co-o9R"/>
                             <constraint firstAttribute="trailing" secondItem="B2w-LT-MgD" secondAttribute="trailing" constant="8" id="IpB-aF-3GU"/>
@@ -36,13 +35,14 @@
                         </constraints>
                     </view>
                 </subviews>
-                <color key="backgroundColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
                     <constraint firstItem="R0b-sD-v6N" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="RD4-4r-NSS"/>
                     <constraint firstItem="R0b-sD-v6N" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="SAA-dt-MaX"/>
                     <constraint firstAttribute="bottom" secondItem="R0b-sD-v6N" secondAttribute="bottom" constant="16" id="vyK-cZ-j2V"/>
                 </constraints>
             </tableViewCellContentView>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <connections>
                 <outlet property="leadingConstraint" destination="SAA-dt-MaX" id="Hlo-ek-6P8"/>
                 <outlet property="messageContainerView" destination="R0b-sD-v6N" id="pPb-hs-IJp"/>
@@ -51,9 +51,4 @@
             <point key="canvasLocation" x="153.62318840579712" y="111.16071428571428"/>
         </tableViewCell>
     </objects>
-    <resources>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-    </resources>
 </document>
