@@ -8,19 +8,8 @@
 import Foundation
 
 struct Message {
-    //let messageID:String
     let content:String
     let receiverID:String
     let senderID:String
 }
-struct UserMessage {
-    let roomID:String
-    let receiverID:String
-    let senderID:String
-}
-struct MessageTest {
-    
-    let content:String
-    let receiverID:String
-    let senderID:String
-}
+
