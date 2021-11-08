@@ -66,16 +66,22 @@ class RegisterViewController: UIViewController {
         displayNameTextField.layer.borderWidth = 1.5
         displayNameTextField.layer.borderColor = UIColor.darkGray.cgColor
         displayNameTextField.layer.masksToBounds = true
+        displayNameTextField.tag = 0
+        displayNameTextField.delegate = self
         
         emailTextField.layer.cornerRadius = 8
         emailTextField.layer.borderWidth = 1.5
         emailTextField.layer.borderColor = UIColor.darkGray.cgColor
         emailTextField.layer.masksToBounds = true
+        emailTextField.tag = 1
+        emailTextField.delegate = self
         
         passwordTextField.layer.cornerRadius = 8
         passwordTextField.layer.borderWidth = 1.5
         passwordTextField.layer.borderColor = UIColor.darkGray.cgColor
         passwordTextField.layer.masksToBounds = true
+        passwordTextField.tag = 2
+        passwordTextField.delegate = self
     }
     
     private func setupButton() {
@@ -121,6 +127,20 @@ class RegisterViewController: UIViewController {
     
     deinit {
         NotificationCenter.default.removeObserver(self)
+    }
+}
+
+extension RegisterViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        // Try to find next responder
+        if let nextField = textField.superview?.viewWithTag(textField.tag + 1) as? UITextField {
+           nextField.becomeFirstResponder()
+        } else {
+           // Not found, so remove keyboard.
+           textField.resignFirstResponder()
+        }
+      // Do not add a line break
+      return false
     }
 }
 

@@ -8,7 +8,7 @@
 import UIKit
 import FirebaseAuth
 
-class LoginViewController: UIViewController, UITextFieldDelegate {
+class LoginViewController: UIViewController {
 
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
@@ -21,6 +21,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         setupTextField()
         addKeyboardObserver()
         addTapGestureRecognizer()
+        
     }
     
     private func addTapGestureRecognizer() {
@@ -67,11 +68,15 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         emailTextField.layer.borderWidth = 1.5
         emailTextField.layer.borderColor = UIColor.darkGray.cgColor
         emailTextField.layer.masksToBounds = true
+        emailTextField.delegate = self
+        emailTextField.tag = 0
         
         passwordTextField.layer.cornerRadius = 8
         passwordTextField.layer.borderWidth = 1.5
         passwordTextField.layer.borderColor = UIColor.darkGray.cgColor
         passwordTextField.layer.masksToBounds = true
+        passwordTextField.delegate = self
+        passwordTextField.tag = 1
     }
     
     private func setupLoginAndRegisterButton() {
@@ -108,5 +113,19 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     deinit {
         NotificationCenter.default.removeObserver(self)
+    }
+}
+
+extension LoginViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        // Try to find next responder
+        if let nextField = textField.superview?.viewWithTag(textField.tag + 1) as? UITextField {
+           nextField.becomeFirstResponder()
+        } else {
+           // Not found, so remove keyboard.
+           textField.resignFirstResponder()
+        }
+      // Do not add a line break
+      return false
     }
 }

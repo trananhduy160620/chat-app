@@ -15,12 +15,9 @@ class ChatViewController: UIViewController {
     @IBOutlet weak var sendMessageButton: UIButton!
     @IBOutlet weak var bottomContainerView: NSLayoutConstraint!
     var chatMessages:[Message] = []
-    var ref:DatabaseReference!
     var user:User?
-    var newTextMessage = ""
     override func viewDidLoad() {
         super.viewDidLoad()
-        ref = Database.database().reference()
         setupNavigationBar()
         setupMessageTextField()
         setupSendMessageButton()
@@ -112,7 +109,7 @@ class ChatViewController: UIViewController {
     private func tableViewScrollRowAtBottom() {
         if chatMessages.count != 0 {
             let indexPath = IndexPath(row: self.chatMessages.count - 1, section: 0)
-            self.chatMessageTableview.scrollToRow(at: indexPath, at: .bottom, animated: true)
+            self.chatMessageTableview.scrollToRow(at: indexPath, at: .bottom, animated: false)
         }
     }
     
@@ -138,7 +135,7 @@ extension ChatViewController : UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ChatMessageCell", for: indexPath) as! ChatMessageCell
         guard let currentUser = Auth.auth().currentUser else { return UITableViewCell() }
         let message = chatMessages[indexPath.row]
-        cell.setupDisplayForMessageTest(currentUserID: currentUser.uid, message: message)
+        cell.setupDisplayMessage(currentUserID: currentUser.uid, message: message)
         return cell
     }
 }

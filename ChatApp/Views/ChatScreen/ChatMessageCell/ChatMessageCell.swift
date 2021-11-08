@@ -18,7 +18,7 @@ class ChatMessageCell: UITableViewCell {
         messageContainerView.layer.masksToBounds = true
     }
     
-    func setupDisplayForMessageTest(currentUserID:String, message: Message) {
+    func setupDisplayMessage(currentUserID:String, message: Message) {
         messageContainerView.backgroundColor = currentUserID == message.senderID ? .systemGreen : UIColor(red: 124/255, green: 124/255, blue: 124/255, alpha: 1)
         messageLabel.backgroundColor = currentUserID == message.senderID ? .systemGreen : UIColor(red: 124/255, green: 124/255, blue: 124/255, alpha: 1)
         messageLabel.textColor = currentUserID == message.senderID ? .white : .white
